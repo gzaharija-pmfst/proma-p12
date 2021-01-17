@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View } from 'react-native';
 
-import LokacijeNavigator from "./navigation/LokacijeNavigacija";
-
-export default function App() {
-  return (
-    <LokacijeNavigator />
-  );
+const MapaEkran = (props) => {
+  return(
+    <View>
+      <Text>Ekran za prikaz mape</Text>
+    </View>
+  )
 }
 
 const stil = StyleSheet.create({
@@ -17,3 +17,5 @@ const stil = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+export default MapaEkran
