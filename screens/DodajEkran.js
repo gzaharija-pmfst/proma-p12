@@ -1,4 +1,5 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   StyleSheet,
   Text,
@@ -7,23 +8,36 @@ import {
   ScrollView,
   Button,
 } from "react-native";
+import * as lokacijeAkcije from "../store/actions/lokacije";
 import Boje from "../constants/Boje";
 
 const DodajEkran = (props) => {
- const [naslovUnos, postaviNaslov] = useState('')
- const noviNaslov = novi => {
-   // Trenutno nema validacije
-   postaviNaslov(novi )
- }
+  const [naslovUnos, postaviNaslov] = useState("");
+
+  const dispatch = useDispatch();
+
+  const noviNaslov = (novi) => {
+    postaviNaslov(novi);
+  };
+
+  const spremiNovuLokaciju = () => {
+    dispatch(lokacijeAkcije.novaLokacija(naslovUnos));
+    props.navigation.goBack();
+  };
+
   return (
     <ScrollView>
       <View style={stil.forma}>
         <Text style={stil.oznaka}>Naziv</Text>
-        <TextInput style={stil.unosTeksta} value={naslovUnos} onChangeText={noviNaslov} />
+        <TextInput
+          style={stil.unosTeksta}
+          value={naslovUnos}
+          onChangeText={noviNaslov}
+        />
         <Button
           title="Spremi lokaciju"
           color={Boje.glavna}
-          onPress={() => {}}
+          onPress={spremiNovuLokaciju}
         />
       </View>
     </ScrollView>
@@ -47,12 +61,11 @@ const stil = StyleSheet.create({
     margin: 30,
   },
   unosTeksta: {
-    borderBottomColor: '#ccc',
+    borderBottomColor: "#ccc",
     borderBottomWidth: 1,
     marginBottom: 15,
     paddingVertical: 4,
-    paddingHorizontal: 2
-
+    paddingHorizontal: 2,
   },
   oznaka: {
     fontSize: 18,

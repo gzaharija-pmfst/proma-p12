@@ -1,14 +1,28 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, FlatList } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import NavButton from "../components/NavButton";
+import PrikazLokacije from "../components/PrikazLokacije";
+import { useSelector } from "react-redux";
 
 const LokacijeEkran = (props) => {
-  return (
-    <View>
-      <Text>Ekran sa popisom svih lokacija</Text>
-    </View>
-  );
+  const lokacije = useSelector((state => state.lokacije.lokacije));
+  const prikaziLokacije = (data) => {
+    return (
+      <PrikazLokacije
+        slika={null}
+        naziv={data.item.naziv}
+        adresa={null}
+        odabir={() => {
+          props.navigation.navigate("Detalji", {
+            nazivLokacije: data.item.naziv,
+            idLokacije: data.item.id,
+          });
+        }}
+      />
+    );
+  };
+  return <FlatList data={lokacije} renderItem={prikaziLokacije} />;
 };
 
 LokacijeEkran.navigationOptions = (navData) => {
@@ -17,7 +31,13 @@ LokacijeEkran.navigationOptions = (navData) => {
     headerRight: () => {
       return (
         <HeaderButtons HeaderButtonComponent={NavButton}>
-          <Item title="Dodaj" iconName="md-add" onPress={() => {navData.navigation.navigate('Nova')}} />
+          <Item
+            title="Dodaj"
+            iconName="md-add"
+            onPress={() => {
+              navData.navigation.navigate("Nova");
+            }}
+          />
         </HeaderButtons>
       );
     },
