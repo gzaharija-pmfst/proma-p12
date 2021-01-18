@@ -13,7 +13,6 @@ export default (state = pocetnoStanje, action) => {
       return {
         lokacije: state.lokacije.concat(novaLokacija)
       }
-
     default:
       return state;
   }
