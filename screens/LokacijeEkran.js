@@ -1,12 +1,19 @@
-import React from "react";
+import React, {useEffect} from "react";
 import { StyleSheet, Text, View, FlatList } from "react-native";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import NavButton from "../components/NavButton";
 import PrikazLokacije from "../components/PrikazLokacije";
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
+import * as akcijeLokacija from '../store/actions/lokacije'
 
 const LokacijeEkran = (props) => {
   const lokacije = useSelector((state => state.lokacije.lokacije));
+  const dispatch = useDispatch();
+
+  useEffect( () => {
+    dispatch(akcijeLokacija.ucitajLokacije())
+  }, [dispatch])
+
   const prikaziLokacije = (data) => {
     return (
       <PrikazLokacije
