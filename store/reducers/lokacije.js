@@ -1,6 +1,5 @@
 import { NOVA_LOKACIJA } from "../actions/lokacije";
 import Lokacija from "../../models/lokacija";
-import LokacijeEkran from "../../screens/LokacijeEkran";
 
 const pocetnoStanje = {
   lokacije: [],
