@@ -9,10 +9,12 @@ import {
   Button,
 } from "react-native";
 import * as lokacijeAkcije from "../store/actions/lokacije";
+import OdabirSlike from "../components/OdabirSlike";
 import Boje from "../constants/Boje";
 
 const DodajEkran = (props) => {
   const [naslovUnos, postaviNaslov] = useState("");
+  const [slika, postaviSliku] = useState()
 
   const dispatch = useDispatch();
 
@@ -20,8 +22,12 @@ const DodajEkran = (props) => {
     postaviNaslov(novi);
   };
 
+  const dohvatiSliku = (putanja) => {
+    postaviSliku(putanja);
+  }
+
   const spremiNovuLokaciju = () => {
-    dispatch(lokacijeAkcije.novaLokacija(naslovUnos));
+    dispatch(lokacijeAkcije.novaLokacija(naslovUnos, slika));
     props.navigation.goBack();
   };
 
@@ -34,6 +40,7 @@ const DodajEkran = (props) => {
           value={naslovUnos}
           onChangeText={noviNaslov}
         />
+        <OdabirSlike vratiSliku={dohvatiSliku}/>
         <Button
           title="Spremi lokaciju"
           color={Boje.glavna}

@@ -10,7 +10,7 @@ const LokacijeEkran = (props) => {
   const prikaziLokacije = (data) => {
     return (
       <PrikazLokacije
-        slika={null}
+        slika={data.item.uriSlike}
         naziv={data.item.naziv}
         adresa={null}
         odabir={() => {
