@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import * as lokacijeAkcije from "../store/actions/lokacije";
 import OdabirSlike from "../components/OdabirSlike";
+import OdabirLokacije from "../components/OdabirLokacije";
 import Boje from "../constants/Boje";
 
 const DodajEkran = (props) => {
@@ -41,6 +42,7 @@ const DodajEkran = (props) => {
           onChangeText={noviNaslov}
         />
         <OdabirSlike vratiSliku={dohvatiSliku}/>
+        <OdabirLokacije />
         <Button
           title="Spremi lokaciju"
           color={Boje.glavna}
