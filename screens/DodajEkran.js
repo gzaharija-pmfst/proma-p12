@@ -42,7 +42,7 @@ const DodajEkran = (props) => {
           onChangeText={noviNaslov}
         />
         <OdabirSlike vratiSliku={dohvatiSliku}/>
-        <OdabirLokacije />
+        <OdabirLokacije navigation={props.navigation} />
         <Button
           title="Spremi lokaciju"
           color={Boje.glavna}

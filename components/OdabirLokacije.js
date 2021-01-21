@@ -11,8 +11,10 @@ import * as Location from "expo-location";
 import * as Permissions from "expo-permissions";
 
 import Boje from "../constants/Boje";
+import PrikazMape from "../components/PrikazMape";
 
 const OdabirLokacije = (props) => {
+  const [ucitavanje, postaviUcitavanje] = useState(false);
   const [koordinate, postaviKoordinate] = useState();
 
   const dozvoliPristup = async () => {
@@ -34,34 +36,57 @@ const OdabirLokacije = (props) => {
       return;
     }
     try {
+      postaviUcitavanje(true);
       const polozaj = await Location.getCurrentPositionAsync({
         timeout: 5000,
       });
-      console.log(polozaj)
+      console.log(polozaj);
+      postaviKoordinate({
+        lat: polozaj.coords.latitude,
+        lng: polozaj.coords.longitude,
+      });
     } catch (err) {
       console.log(err);
-      Alert.alert(
-        "Nije moguće dohvatiti lokaciju",
-        "Pokušajte ponovno",
-        [{ text: "OK" }]
-      );
+      Alert.alert("Nije moguće dohvatiti lokaciju", "Pokušajte ponovno", [
+        { text: "OK" },
+      ]);
     }
+    postaviUcitavanje(false);
   };
+  const odaberiLokaciju = () =>{
+    props.navigation.navigate('Mapa')
+  }
   return (
     <View style={stil.glavniOkvir}>
-      <View style={stil.prikazMape}>
-        <Text>Trenutno nema dohvaćene lokacije!</Text>
+      <PrikazMape lokacija={koordinate} style={stil.prikazMape}>
+        {ucitavanje ? (
+          <ActivityIndicator size="large" color={Boje.glavna} />
+        ) : (
+          <Text>Trenutno nema dohvaćene lokacije!</Text>
+        )}
+      </PrikazMape>
+      <View style={stil.akcije}>
+        <Button
+          title="Dohvati lokaciju"
+          color={Boje.glavna}
+          onPress={dohvatiLokaciju}
+        />
+        <Button
+          title="Odaberi lokaciju"
+          color={Boje.glavna}
+          onPress={odaberiLokaciju}
+        />
       </View>
-      <Button
-        title="Dohvati lokaciju"
-        color={Boje.glavna}
-        onPress={dohvatiLokaciju}
-      />
     </View>
   );
 };
 
 const stil = StyleSheet.create({
+  akcije: {
+    flexDirection: 'row',
+    justifyContent: 'space-around',
+    width: '100%'
+  },
   glavniOkvir: {
     marginBottom: 15,
   },
@@ -71,6 +96,8 @@ const stil = StyleSheet.create({
     height: 150,
     borderColor: "#ccc",
     borderWidth: 1,
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
