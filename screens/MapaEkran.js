@@ -1,6 +1,7 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { useState, useEffect, useCallback } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import MapView, { Marker } from "react-native-maps";
+import Boje from "../constants/Boje";
 
 const MapaEkran = (props) => {
   const [lokacija, postaviLokaciju] = useState();
@@ -11,6 +12,20 @@ const MapaEkran = (props) => {
     });
     console.log(event.nativeEvent);
   };
+
+  const spremiOdabraniMarker = useCallback(() => {
+    if (!lokacija) {
+      // Poruka
+      return
+    }
+    props.navigation.navigate('Nova', {
+      odabranaLokacija: lokacija
+    });
+  }, [lokacija]);
+
+  useEffect(() => {
+    props.navigation.setParams({ spremiMarker: spremiOdabraniMarker });
+  }, [spremiOdabraniMarker]);
 
   let markerLokacija;
   if (lokacija) {
@@ -27,13 +42,34 @@ const MapaEkran = (props) => {
   };
   return (
     <MapView style={{ flex: 1 }} region={regijaMape} onPress={dodirMapa}>
-      { markerLokacija && <Marker title="Odabrana lokacija" coordinate={markerLokacija}></Marker>}
+      {markerLokacija && (
+        <Marker title="Odabrana lokacija" coordinate={markerLokacija}></Marker>
+      )}
     </MapView>
   );
 };
 
+MapaEkran.navigationOptions = (navData) => {
+  const spremi = navData.navigation.getParam("spremiMarker");
+  return {
+    headerRight: () => {
+      return (
+        <TouchableOpacity style={stil.menuOkvir} onPress={spremi}>
+          <Text style={stil.menuSpremi}>SPREMI</Text>
+        </TouchableOpacity>
+      );
+    },
+  };
+};
+
 const stil = StyleSheet.create({
-  mapa: {},
+  menuOkvir: {
+    marginHorizontal: 20,
+  },
+  menuSpremi: {
+    fontSize: 16,
+    color: "white",
+  },
 });
 
 export default MapaEkran;
