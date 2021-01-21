@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -16,6 +16,15 @@ import PrikazMape from "../components/PrikazMape";
 const OdabirLokacije = (props) => {
   const [ucitavanje, postaviUcitavanje] = useState(false);
   const [koordinate, postaviKoordinate] = useState();
+
+  const odabranaLokacija = props.navigation.getParam("odabranaLokacija");
+  const {posaljiKoordinate} = props
+  useEffect(() => {
+    if (odabranaLokacija) {
+      postaviKoordinate(odabranaLokacija);
+      props.posaljiKoordinate(odabranaLokacija);
+    }
+  }, [odabranaLokacija, posaljiKoordinate]);
 
   const dozvoliPristup = async () => {
     const odobrenje = await Permissions.askAsync(Permissions.LOCATION);
@@ -45,6 +54,10 @@ const OdabirLokacije = (props) => {
         lat: polozaj.coords.latitude,
         lng: polozaj.coords.longitude,
       });
+      props.posaljiKoordinate({
+        lat: polozaj.coords.latitude,
+        lng: polozaj.coords.longitude,
+      });
     } catch (err) {
       console.log(err);
       Alert.alert("Nije moguće dohvatiti lokaciju", "Pokušajte ponovno", [
@@ -53,9 +66,9 @@ const OdabirLokacije = (props) => {
     }
     postaviUcitavanje(false);
   };
-  const odaberiLokaciju = () =>{
-    props.navigation.navigate('Mapa')
-  }
+  const odaberiLokaciju = () => {
+    props.navigation.navigate("Mapa");
+  };
   return (
     <View style={stil.glavniOkvir}>
       <PrikazMape lokacija={koordinate} style={stil.prikazMape}>
@@ -83,9 +96,9 @@ const OdabirLokacije = (props) => {
 
 const stil = StyleSheet.create({
   akcije: {
-    flexDirection: 'row',
-    justifyContent: 'space-around',
-    width: '100%'
+    flexDirection: "row",
+    justifyContent: "space-around",
+    width: "100%",
   },
   glavniOkvir: {
     marginBottom: 15,

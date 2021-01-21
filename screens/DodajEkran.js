@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useCallback } from "react";
 import { useDispatch } from "react-redux";
 import {
   StyleSheet,
@@ -15,7 +15,8 @@ import Boje from "../constants/Boje";
 
 const DodajEkran = (props) => {
   const [naslovUnos, postaviNaslov] = useState("");
-  const [slika, postaviSliku] = useState()
+  const [slika, postaviSliku] = useState();
+  const [odabranaLokacija, postaviLokaciju] = useState();
 
   const dispatch = useDispatch();
 
@@ -25,12 +26,17 @@ const DodajEkran = (props) => {
 
   const dohvatiSliku = (putanja) => {
     postaviSliku(putanja);
-  }
+  };
 
   const spremiNovuLokaciju = () => {
-    dispatch(lokacijeAkcije.novaLokacija(naslovUnos, slika));
+    dispatch(lokacijeAkcije.novaLokacija(naslovUnos, slika, odabranaLokacija));
     props.navigation.goBack();
   };
+
+  const slanjeKoor = useCallback((lokacija) => {
+    console.log("Vracamo lokaciju", lokacija);
+    postaviLokaciju(lokacija)
+  }, []);
 
   return (
     <ScrollView>
@@ -41,8 +47,11 @@ const DodajEkran = (props) => {
           value={naslovUnos}
           onChangeText={noviNaslov}
         />
-        <OdabirSlike vratiSliku={dohvatiSliku}/>
-        <OdabirLokacije navigation={props.navigation} />
+        <OdabirSlike vratiSliku={dohvatiSliku} />
+        <OdabirLokacije
+          navigation={props.navigation}
+          posaljiKoordinate={slanjeKoor}
+        />
         <Button
           title="Spremi lokaciju"
           color={Boje.glavna}

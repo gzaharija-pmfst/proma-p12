@@ -6,8 +6,13 @@ const PrikazMape = (props) => {
   let urlMape;
 
   if (props.lokacija) {
-    urlMape = "https://mangomap.com/images/thumnails/125f71e6-a4a4-11e6-a028-06c182e4d011_big.png";
- /*    urlMape = `https://maps.googleapis.com/maps/api/staticmap?center=${props.lokacija.lat},${props.lokacija.lng}&zoom=13&size=400x200&maptype=roadmap&markers=color:red%7Clabel:A%7C${props.lokacija.lat},${props.lokacija.lng}&key=${ENV.google_api}` */
+    urlMape =
+      "http://open.mapquestapi.com/staticmap/v4/getmap?" +
+      `key=${ENV.mapQuest_api}` +
+      `&size=200,400` +
+      `&zoom=13` +
+      `&center=${props.lokacija.lat},${props.lokacija.lng}`;
+    /*    urlMape = `https://maps.googleapis.com/maps/api/staticmap?center=${props.lokacija.lat},${props.lokacija.lng}&zoom=13&size=400x200&maptype=roadmap&markers=color:red%7Clabel:A%7C${props.lokacija.lat},${props.lokacija.lng}&key=${ENV.google_api}` */
   }
 
   return (

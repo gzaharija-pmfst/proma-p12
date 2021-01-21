@@ -55,3 +55,21 @@ export const dohvatiLokacije = () => {
   });
   return promise;  
 }
+
+export const ocistiLokacije = () => {
+  const promise = new Promise((resolve, reject) => {
+    db.transaction((trObj) => {
+      trObj.executeSql(
+        'DROP TABLE lokacije',
+        [],
+        (_, rezultat) => {
+          resolve(rezultat);
+        },
+        (_, err) => {
+          reject(err);
+        }
+      );
+    });
+  });
+  return promise;  
+}
